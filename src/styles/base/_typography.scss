@@ -1,0 +1,77 @@
+// -----------------------------------------------------------------------------
+// This file contains typography styles.
+// -----------------------------------------------------------------------------
+
+/**
+ * Set up a decent box model on the root element
+ */
+
+html {
+  font-size: $rem-base;
+}
+
+/**
+ * Basic typography style for copy text
+ */
+body {
+  color: $base-text-color;
+  background-color: $base-background-color;
+  font-family: $base-font-family;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  font-weight: $base-font-weight;
+  min-width: $base-min-width;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/**
+ * Basic styles for links
+ */
+a {
+  @include animate(color);
+
+  color: $link-color;
+  text-decoration: $link-decoration;
+
+  &:hover {
+    color: $link-hover-color;
+    text-decoration: $link-hover-decoration;
+  }
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+#{$headings},
+.h {
+  font-family: $headings-font-family;
+  font-weight: $headings-font-weight;
+  margin: 0 0 0.5em;
+  color: $headings-color;
+}
+
+h1, .h1 {
+  font-size: $h1-font-size;
+}
+
+h2, .h2 {
+  font-size: $h2-font-size;
+}
+
+h3, .h3 {
+  font-size: $h3-font-size;
+}
+
+h4, .h4 {
+  font-size: $h4-font-size;
+}
+
+h5, .h5 {
+  font-size: $h5-font-size;
+}
+
+h6, .h6 {
+  font-size: $h6-font-size;
+}

@@ -1,0 +1,35 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v5.0.1 | 20191019
+   License: none (public domain)
+*/
+
+body {
+  margin: 0;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, main, menu, nav, section,
+iframe {
+  display: block;
+}
+
+// adaptive images
+img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: top;
+}
+
+// google map fix
+.gm-style img {max-width: none}
+
+iframe {
+  width: 100%;
+  max-width: 100%;
+  border: 0;
+}
+
+figure {
+  margin: 0;
+}

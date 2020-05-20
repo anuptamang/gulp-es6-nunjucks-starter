@@ -1,0 +1,15 @@
+<!-- to add class to body remove comments and set class name -->
+{# {% set bodyClass = "custom-body-class" %} #}
+{% extends "partials/layout.html" %}
+{% block content %}
+{% include "partials/header.html" %}
+<main id="main">
+  <div class="container">
+    <h1>about page</h1>
+    <div class="row">
+    	{% include "blocks/article-block.html" %}
+    </div>
+  </div>
+</main>
+{% include "partials/footer.html" %}
+{% endblock %}

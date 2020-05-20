@@ -1,0 +1,21 @@
+#{$buttons} {
+  @extend %resetButton;
+}
+
+%btn {
+  color: $btn-color;
+  background-color: $btn-background;
+  padding: $btn-padding;
+  font-size: $btn-font-size;
+  line-height: $btn-line-height;
+  font-weight: $btn-font-weight;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.btn {
+  @extend %btn;
+}

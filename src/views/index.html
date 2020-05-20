@@ -1,0 +1,42 @@
+<!-- to add class to body remove comments and set class name -->
+{# {% set bodyClass = "custom-body-class" %} #}
+{% extends "partials/layout.html" %}
+{% block content %}
+  {% include "partials/header.html" %}
+  <main id="main">
+    <div class="container">
+      <h1>Heading 1</h1>
+      <h2>Heading 2</h2>
+      <h3>Heading 3</h3>
+      <h4>Heading 4</h4>
+      <h5>Heading 5</h5>
+      <h6>Heading 6</h6>
+      <a href="#">Link</a><br>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt obcaecati fugit aliquid sequi veritatis, possimus cumque dolor qui, velit aperiam esse corporis sint praesentium a aut illo. Facilis, ullam, accusantium.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt obcaecati fugit aliquid sequi veritatis, possimus cumque dolor qui, velit aperiam esse corporis sint praesentium a aut illo. Facilis, ullam, accusantium.</p>
+      <ul>
+        <li>lorem item 1</li>
+        <li>lorem item 2</li>
+        <li>lorem item 3</li>
+      </ul>
+      <ol>
+        <li>lorem item 1</li>
+        <li>lorem item 2</li>
+        <li>lorem item 3</li>
+      </ol>
+      <button>Button</button>
+      <a href="#" class="btn">Btn</a>
+      <br><br>
+      <input type="text" placeholder="placeholder">
+      <br><br>
+      <input type="search" placeholder="placeholder">
+      <br><br>
+      <input type="search" placeholder="password">
+      <br><br>
+      <textarea name="" id="" cols="30" rows="10"></textarea>
+      <br><br>
+      <img src="https://wallpaperplay.com/walls/full/4/2/2/368826.jpg" alt="image description">
+    </div>
+  </main>
+  {% include "partials/footer.html" %}
+{% endblock %}

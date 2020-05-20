@@ -1,0 +1,64 @@
+form,
+fieldset {
+  margin: 0;
+  padding: 0;
+  border-style: none;
+}
+
+#{$form-elements} {
+  @include animate(border-color);
+
+  @if ($form-element-border-width != null) {
+    border: $form-element-border-width solid $form-element-border-color;
+  } @else {
+    border: 0;
+  }
+
+  @if ($form-element-border-radius != null) {
+    border-radius: $form-element-border-radius;
+  }
+
+  font-size: $form-element-font-size;
+  line-height: normal;
+  background-color: $form-background-color;
+  width: 100%;
+  min-width: 0;
+  height: $form-element-height;
+  padding: $form-element-padding;
+  -webkit-appearance: none;
+
+  &:focus {
+    border-color: $form-element-focus-border-color;
+
+    @if ($form-element-outline == false) {
+      outline: none;
+    }
+  }
+
+  &::-ms-clear { display: none; }
+
+  @include placeholder {
+    color: $placeholder-color;
+    font-size: $placeholder-font-size;
+  }
+}
+
+textarea,
+.textarea {
+  resize: none;
+  height: $textarea-height;
+  padding: $textarea-padding;
+  font-size: $textarea-font-size;
+}
+
+input[type="search"] {
+  -webkit-appearance: textfield;
+
+  &::-webkit-search-decoration {
+    -webkit-appearance: none;
+  }
+
+  &::-webkit-search-cancel-button {
+    display: none;
+  }
+}

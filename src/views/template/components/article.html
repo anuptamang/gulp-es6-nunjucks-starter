@@ -1,0 +1,8 @@
+{% for item in items %}
+	<div class="list-group-item">
+		  <a href="{{item.linkURL}}">
+		    <span class="link-description">{{ item.title }}</span>
+		  </a>
+    	<button>{{ item.linkText }}</button>
+	</div>
+{% endfor %}

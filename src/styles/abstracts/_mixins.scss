@@ -1,0 +1,401 @@
+
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass mixins.
+// -----------------------------------------------------------------------------
+
+
+/*
+  @param {$fontfamily} - font family name
+  @param {$filename} - file name in 'fonts' folder (e.g. my-web-font.woff)
+  @param {$fontweight} - @default: normal;
+  @param {$fontstyle} - @default: normal;
+
+  NOTE: used only woff, because in supported in all browsers:
+*/
+
+@mixin font-face($font-name, $font-path, $weight, $style) {
+  @font-face {
+    font-family: '#{$font-name}';
+    src: url($base-font-path + '/#{$font-path}.woff') format('woff'),
+    url($base-font-path + '/#{$font-path}.woff') format('woff2'),
+    url($base-font-path + '/#{$font-path}.ttf') format('truetype');
+    font-weight: $weight;
+    font-style: $style;
+  }
+}
+
+/*
+
+  @param {$min-font-size} - minimum font size (in PX)
+  @param {$max-font-size} - maximum font size (in PX)
+  @param {$min-vw} - minimum viewport where minimum font size become fixed @default: $fluid-min;
+  @param {$max-vw} - maximum viewport where maximum font size become fixed @default: $fluid-max;
+
+  h1 {
+    @include fluid-type(12px, 24px);
+  }
+
+  NOTE:
+
+  Important: all values should be in same units (px, rem, em)
+
+  h2 {
+    @include fluid-type(2rem, 4rem, 32rem, 190rem);
+  }
+
+  This font work:;
+
+  h2 {
+    @include fluid-type(2rem, 4em, 320px, 1920px);
+  }
+
+*/
+@mixin fluid-type($min-font-size, $max-font-size, $min-vw: $fluid-min, $max-vw: $fluid-max) {
+  $unit1: unit($min-vw);
+  $unit2: unit($max-vw);
+  $unit3: unit($min-font-size);
+  $unit4: unit($max-font-size);
+
+  @if $unit1 == $unit2 and $unit1 == $unit3 and $unit1 == $unit4 {
+    font-size: $min-font-size;
+    @media screen and (min-width: $min-vw) {
+      font-size: calc(#{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
+    }
+    @media screen and (min-width: $max-vw) {
+      font-size: $max-font-size;
+    }
+  }
+}
+
+@mixin make-embed($map) {
+  $ratio-x: nth($map, 1);
+  $ratio-y: nth($map, 2);
+
+  &:before {
+    padding-top: percentage($ratio-y / $ratio-x);
+  }
+}
+
+/// Mixin helping defining both `width` and `height` simultaneously.
+///
+/// @author Hugo Giraudel
+///
+/// @access public
+///
+/// @param {Length} $width - Element’s `width`
+/// @param {Length} $height ($width) - Element’s `height`
+///
+/// @example scss - Usage
+///   .foo {
+///     @include size(10em);
+///   }
+///
+///   .bar {
+///     @include size(100%, 10em);
+///   }
+///
+/// @example css - CSS output
+///   .foo {
+///     width: 10em;
+///     height: 10em;
+///   }
+///
+///   .bar {
+///     width: 100%;
+///     height: 10em;
+///   }
+///
+@mixin size($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
+
+/// font-smothing
+/// @include font-smoothing(on);
+/// @include font-smoothing(off);
+@mixin font-smoothing($value: on) {
+  @if $value == on {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  } @else {
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: auto;
+  }
+}
+
+/// Hides the text in an element, commonly used to show an image. Some elements will need block-level styles applied.
+///
+/// @link http://zeldman.com/2012/03/01/replacing-the-9999px-hack-new-image-replacement
+///
+/// @example scss - Usage
+///   .element {
+///     @include hide-text;
+///   }
+///
+/// @example css - CSS Output
+///   .element {
+///     overflow: hidden;
+///     text-indent: 101%;
+///     white-space: nowrap;
+///   }
+///
+@mixin hide-text {
+  overflow: hidden;
+  text-indent: 101%;
+  white-space: nowrap;
+}
+
+/// Animate css properties
+// usage
+// scss - @include animate(color);
+//     or @include animate(color width);
+//     or @include animate(color width, 1s, linear);
+//
+$animation-speed: .3s !default;
+
+@mixin animate($properties, $duration: $animation-speed, $easing: ease-in-out) {
+  $list:();
+  @each $prop in $properties {
+    $str: #{$prop} #{$duration} #{$easing};
+    $list: join($list, #{$str}, comma);
+  }
+
+  transition: $list;
+}
+
+/// Mixin for styling form-placeholders
+/// @example scss - Usage
+///   @include placeholder {
+///    color: #333;
+///   }
+///
+///   input[type='text'],
+///   input[type='tel'],
+///   input[type='email'] {
+///     @include placeholder {
+///      color: red;
+///     }
+///   }
+
+@mixin placeholder {
+  &::-webkit-input-placeholder {@content}
+  &::-moz-placeholder {opacity: 1; @content}
+  &:-moz-placeholder {@content}
+  &:-ms-input-placeholder {@content}
+  &.placeholder {@content}
+}
+
+/// Font-size px to rem calc
+/// @example scss - Usage
+/// selector {
+///    @include rem-font-size(16px);
+/// }
+
+@mixin rem-font-size($px-size) {
+  // sass-lint:disable no-duplicate-properties
+  font-size: $px-size;
+  font-size: ($px-size / 10px) + rem;
+}
+
+
+@function url-friendly-colour($hex-bg-color) {
+  @return '%23' + str-slice('#{$hex-bg-color}', 2, -1);
+}
+
+@mixin chevron-right($color) {
+  $bg: str-replace($color, '#', '');
+  background-image: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E %3Cpath fill='#{url-friendly-colour($color)}' d='M240.708 17.489c23.063 22.512 248.395 259.044 248.395 259.044 12.304 12.083 18.484 27.808 18.484 43.533s-6.179 31.449-18.484 43.422c0 0-225.333 236.644-248.395 259.044-23.063 22.512-64.554 24.056-89.107 0-24.607-23.946-26.539-57.436 0-86.845l206.739-215.622-206.739-215.623c-26.539-29.409-24.608-62.954 0-86.955 24.552-24.056 66.044-22.567 89.107 0z'%3E%3C/path%3E %3C/svg%3E");
+}
+
+@mixin triangle($size, $color, $direction) {
+  $width: nth($size, 1);
+  $height: nth($size, length($size));
+  $foreground-color: nth($color, 1);
+  $background-color: if(length($color) == 2, nth($color, 2), transparent);
+
+  height: 0;
+  width: 0;
+
+  @if ($direction==up) or ($direction==down) or ($direction==right) or ($direction==left) {
+    $width: $width / 2;
+    $height: if(length($size) > 1, $height, $height/2);
+
+    @if $direction==up {
+      border-bottom: $height solid $foreground-color;
+      border-left: $width solid $background-color;
+      border-right: $width solid $background-color;
+    }
+
+    @else if $direction==right {
+      border-bottom: $width solid $background-color;
+      border-left: $height solid $foreground-color;
+      border-top: $width solid $background-color;
+    }
+
+    @else if $direction==down {
+      border-left: $width solid $background-color;
+      border-right: $width solid $background-color;
+      border-top: $height solid $foreground-color;
+    }
+
+    @else if $direction==left {
+      border-bottom: $width solid $background-color;
+      border-right: $height solid $foreground-color;
+      border-top: $width solid $background-color;
+    }
+  }
+
+  @else if ($direction==up-right) or ($direction==up-left) {
+    border-top: $height solid $foreground-color;
+
+    @if $direction==up-right {
+      border-left: $width solid $background-color;
+    }
+
+    @else if $direction==up-left {
+      border-right: $width solid $background-color;
+    }
+  }
+
+  @else if ($direction==down-right) or ($direction==down-left) {
+    border-bottom: $height solid $foreground-color;
+
+    @if $direction==down-right {
+      border-left: $width solid $background-color;
+    }
+
+    @else if $direction==down-left {
+      border-right: $width solid $background-color;
+    }
+  }
+
+  @else if ($direction==inset-up) {
+    border-color: $background-color $background-color $foreground-color;
+    border-style: solid;
+    border-width: $height $width;
+  }
+
+  @else if ($direction==inset-down) {
+    border-color: $foreground-color $background-color $background-color;
+    border-style: solid;
+    border-width: $height $width;
+  }
+
+  @else if ($direction==inset-right) {
+    border-color: $background-color $background-color $background-color $foreground-color;
+    border-style: solid;
+    border-width: $width $height;
+  }
+
+  @else if ($direction==inset-left) {
+    border-color: $background-color $foreground-color $background-color $background-color;
+    border-style: solid;
+    border-width: $width $height;
+  }
+}
+
+// Overlay
+/// @example scss - Usage
+
+/// input
+/// selector {
+///    @include overlay();
+/// }
+/// output
+/// selector {
+///    left: 0;
+///    top: 0;
+///    right: 0;
+////   bottom: 0;
+/// }
+
+/// input
+/// selector {
+///    @include overlay(1px);
+/// }
+/// output
+/// selector {
+///    left: 1px;
+///    top: 1px;
+///    right: 1px;
+////   bottom: 1px;
+/// }
+
+/// input
+/// selector {
+///    @include overlay(1px,2px,3px,4px);
+/// }
+/// output
+/// selector {
+///    left: 1px;
+///    top: 2px;
+///    right: 3px;
+////   bottom: 4px;
+/// }
+
+@mixin overlay($left: 0, $top: $left, $right: $left, $bottom: $left) {
+  @if ($left == null) {$left: 0}
+  @if ($top == null) {$top: 0}
+  @if ($right == null) {$right: 0}
+  @if ($bottom == null) {$bottom: 0}
+  position: absolute;
+  left: $left;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+}
+
+// Position
+
+@mixin position($position, $args) {
+  @each $o in top right bottom left {
+    $i: index($args, $o);
+
+    @if $i and $i + 1 <= length($args) and type-of(nth($args, $i + 1)) == number {
+      #{$o}: nth($args, $i + 1);
+    }
+  }
+
+  position: $position;
+}
+
+@mixin absolute($args) {
+  @include position("absolute", $args);
+}
+
+@mixin fixed($args) {
+  @include position("fixed", $args);
+}
+
+@mixin relative($args) {
+  @include position("relative", $args);
+}
+
+// Simple grid
+@mixin flex-row($align: null, $justify: null, $gap: null) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: $align;
+  justify-content: $justify;
+
+  @if ($gap != null) {
+    margin-left: calc(#{$gap} * -1);
+    margin-right: calc(#{$gap} * -1);
+  }
+}
+
+%flex-row {
+  @include flex-row();
+}
+
+.flex-row {
+  @extend %flex-row;
+}
+
+@mixin flex-col($col, $sum, $gap: null) {
+  width: percentage($col/$sum);
+
+  @if ($gap != null) {
+    padding: 0 $gap;
+  }
+}

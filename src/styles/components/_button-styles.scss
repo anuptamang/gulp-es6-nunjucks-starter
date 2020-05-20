@@ -1,0 +1,19 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the button component.
+// -----------------------------------------------------------------------------
+
+.btn {
+  @include animate(color background);
+
+  display: inline-block;
+  vertical-align: top;
+  text-align: center;
+  border-radius: 19px;
+  border: 1px solid $green-dark;
+  background: transparent;
+
+  &:hover {
+    color: $white;
+    background: $green-dark;
+  }
+}
